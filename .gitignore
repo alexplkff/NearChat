@@ -1,0 +1,22 @@
+.build/
+DerivedData/
+.swiftpm/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+
+# Local credentials, signing assets and runtime stores
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.pem
+*.key
+*.mobileprovision
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*

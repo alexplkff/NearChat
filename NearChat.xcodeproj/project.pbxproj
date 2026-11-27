@@ -1,0 +1,288 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02E53CE191F4BE04CC3D6B73 /* NearChat/Transport/BLETransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E2777D11F9DF01EE7D7B06 /* NearChat/Transport/BLETransport.swift */; };
+		19EE3102C860CD140C1AC145 /* NearChat/App/LabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120AE7EE8C021B4C371467DA /* NearChat/App/LabView.swift */; };
+		22830152FA87EE244F8F7291 /* NearChat/App/NearChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5E5C2BDFABE167F9700CF5 /* NearChat/App/NearChatApp.swift */; };
+		3440E8A2B9A55A55BAC20097 /* NearChat/Transport/LANTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = C925DBB376B9DE9CC1908D6C /* NearChat/Transport/LANTransport.swift */; };
+		463F0071DE792AF15F9B90DD /* NearChat/App/LabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133F35E1130C424972E12347 /* NearChat/App/LabModel.swift */; };
+		70A496AB543EB9953717ECE7 /* NearChat/App/IdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3053320304B2EFAEDE49FE82 /* NearChat/App/IdentityStore.swift */; };
+		B98B72EDF1C1C6127CE0FC64 /* NearChat/Resources/PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CAAB16894377646C7920B1F9 /* NearChat/Resources/PrivacyInfo.xcprivacy */; };
+		BBE189F87790362F4781096F /* NearChatCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED3DC570B697046E1D6DC405 /* NearChatCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		013CE6F5644CB1CC90A6EC44 /* Sources/NearChatCore/Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/NearChatCore/Protocol.swift; sourceTree = SOURCE_ROOT; };
+		120AE7EE8C021B4C371467DA /* NearChat/App/LabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/App/LabView.swift; sourceTree = SOURCE_ROOT; };
+		133F35E1130C424972E12347 /* NearChat/App/LabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/App/LabModel.swift; sourceTree = SOURCE_ROOT; };
+		1C5E5C2BDFABE167F9700CF5 /* NearChat/App/NearChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/App/NearChatApp.swift; sourceTree = SOURCE_ROOT; };
+		1D468023561A29F9E63270C4 /* NearChat/Resources/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = NearChat/Resources/Info.plist; sourceTree = SOURCE_ROOT; };
+		29E2777D11F9DF01EE7D7B06 /* NearChat/Transport/BLETransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/Transport/BLETransport.swift; sourceTree = SOURCE_ROOT; };
+		3053320304B2EFAEDE49FE82 /* NearChat/App/IdentityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/App/IdentityStore.swift; sourceTree = SOURCE_ROOT; };
+		33CB3492D90CB1C6559609E9 /* Tests/NearChatCoreTests/MeshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests/NearChatCoreTests/MeshTests.swift; sourceTree = SOURCE_ROOT; };
+		8BB8BA1C998724AFDC925EE5 /* Sources/NearChatCore/MeshEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/NearChatCore/MeshEngine.swift; sourceTree = SOURCE_ROOT; };
+		9889CFE8DDE7834CAADA378E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
+		A8792157CB4F27FB949C035F /* NearChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = NearChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C925DBB376B9DE9CC1908D6C /* NearChat/Transport/LANTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearChat/Transport/LANTransport.swift; sourceTree = SOURCE_ROOT; };
+		CAAB16894377646C7920B1F9 /* NearChat/Resources/PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NearChat/Resources/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E2AA269EB967A8853A258BFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBE189F87790362F4781096F /* NearChatCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A3E27B8CA818264D75C8D81 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A8792157CB4F27FB949C035F /* NearChat.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0D6E4079E36703EBD37C0072 = {
+			isa = PBXGroup;
+			children = (
+				E17E80AD8E2103CF3FC3FD96 /* NearChat */,
+				1DDF05C6D221365D25118408 /* Core and tests (Swift Package) */,
+				0A3E27B8CA818264D75C8D81 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1DDF05C6D221365D25118408 /* Core and tests (Swift Package) */ = {
+			isa = PBXGroup;
+			children = (
+				9889CFE8DDE7834CAADA378E /* Package.swift */,
+				8BB8BA1C998724AFDC925EE5 /* Sources/NearChatCore/MeshEngine.swift */,
+				013CE6F5644CB1CC90A6EC44 /* Sources/NearChatCore/Protocol.swift */,
+				33CB3492D90CB1C6559609E9 /* Tests/NearChatCoreTests/MeshTests.swift */,
+			);
+			name = "Core and tests (Swift Package)";
+			sourceTree = "<group>";
+		};
+		E17E80AD8E2103CF3FC3FD96 /* NearChat */ = {
+			isa = PBXGroup;
+			children = (
+				3053320304B2EFAEDE49FE82 /* NearChat/App/IdentityStore.swift */,
+				133F35E1130C424972E12347 /* NearChat/App/LabModel.swift */,
+				120AE7EE8C021B4C371467DA /* NearChat/App/LabView.swift */,
+				1C5E5C2BDFABE167F9700CF5 /* NearChat/App/NearChatApp.swift */,
+				29E2777D11F9DF01EE7D7B06 /* NearChat/Transport/BLETransport.swift */,
+				C925DBB376B9DE9CC1908D6C /* NearChat/Transport/LANTransport.swift */,
+				1D468023561A29F9E63270C4 /* NearChat/Resources/Info.plist */,
+				CAAB16894377646C7920B1F9 /* NearChat/Resources/PrivacyInfo.xcprivacy */,
+			);
+			name = NearChat;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34A04005BCAF206EEC990BD9 /* NearChat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A807E8A027297B0B93701FB /* Build configuration list for PBXNativeTarget "NearChat" */;
+			buildPhases = (
+				878A52FC5FF6A57D50B7B870 /* Sources */,
+				E2AA269EB967A8853A258BFA /* Frameworks */,
+				41D311A605520FC7B8B9A980 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NearChat;
+			packageProductDependencies = (
+				ED3DC570B697046E1D6DC405 /* NearChatCore */,
+			);
+			productName = NearChat;
+			productReference = A8792157CB4F27FB949C035F /* NearChat.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		244210E48437B6556980A702 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					34A04005BCAF206EEC990BD9 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+				};
+			};
+			buildConfigurationList = B4E10CAA9C5E22150B71559C /* Build configuration list for PBXProject "NearChat" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ru,
+				en,
+				Base,
+			);
+			mainGroup = 0D6E4079E36703EBD37C0072;
+			packageReferences = (
+				BC4A71180870F7945155FBB0 /* XCLocalSwiftPackageReference "." */,
+			);
+			productRefGroup = 0A3E27B8CA818264D75C8D81 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34A04005BCAF206EEC990BD9 /* NearChat */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41D311A605520FC7B8B9A980 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98B72EDF1C1C6127CE0FC64 /* NearChat/Resources/PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		878A52FC5FF6A57D50B7B870 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70A496AB543EB9953717ECE7 /* NearChat/App/IdentityStore.swift in Sources */,
+				463F0071DE792AF15F9B90DD /* NearChat/App/LabModel.swift in Sources */,
+				19EE3102C860CD140C1AC145 /* NearChat/App/LabView.swift in Sources */,
+				22830152FA87EE244F8F7291 /* NearChat/App/NearChatApp.swift in Sources */,
+				02E53CE191F4BE04CC3D6B73 /* NearChat/Transport/BLETransport.swift in Sources */,
+				3440E8A2B9A55A55BAC20097 /* NearChat/Transport/LANTransport.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		07CA1E69F6068DEA30A4DA6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2B23A31EEC75B029432F2445 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		594BCDCC96599D88EF772A08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35T8QD6VQW;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NearChat/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = local.nearchat.lab;
+				PRODUCT_NAME = NearChat;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		EDDA600A3F771F810A8065C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 35T8QD6VQW;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NearChat/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = local.nearchat.lab;
+				PRODUCT_NAME = NearChat;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4A807E8A027297B0B93701FB /* Build configuration list for PBXNativeTarget "NearChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDDA600A3F771F810A8065C9 /* Debug */,
+				594BCDCC96599D88EF772A08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4E10CAA9C5E22150B71559C /* Build configuration list for PBXProject "NearChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B23A31EEC75B029432F2445 /* Debug */,
+				07CA1E69F6068DEA30A4DA6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		BC4A71180870F7945155FBB0 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ED3DC570B697046E1D6DC405 /* NearChatCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC4A71180870F7945155FBB0 /* XCLocalSwiftPackageReference "." */;
+			productName = NearChatCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 244210E48437B6556980A702 /* Project object */;
+}

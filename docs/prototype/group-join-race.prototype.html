@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>NearChat — отмена вступления · макет логики</title>
+<style>
+  :root { color-scheme: light; font: 16px/1.5 system-ui, sans-serif; color: #192b31; background: #f5f7f7; }
+  * { box-sizing: border-box; }
+  body { max-width: 1100px; margin: auto; padding: 32px 20px 64px; }
+  h1 { font-size: clamp(25px, 4vw, 36px); line-height: 1.15; margin: 12px 0; }
+  h2 { font-size: 21px; margin: 30px 0 12px; }
+  h3 { font-size: 16px; margin: 0 0 12px; }
+  p { max-width: 85ch; }
+  .tag { color: #246b67; font-weight: 650; font-size: 13px; letter-spacing: .04em; }
+  .muted { color: #56676d; font-size: 14px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(255px,1fr)); gap: 14px; }
+  .card, .walkthrough { background: white; border: 1px solid #d7e0e1; border-radius: 12px; padding: 20px; }
+  dl { margin: 0; }
+  dt { color: #56676d; font-size: 13px; margin-top: 12px; }
+  dd { margin: 2px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+  .notice { padding: 14px 18px; background: #e3efed; border-left: 3px solid #246b67; border-radius: 4px; margin: 18px 0; }
+  .buttons, .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { font: inherit; font-size: 14px; text-align: left; cursor: pointer; border: 1px solid #b4c8c7; background: white; color: #163f3c; padding: 10px 14px; border-radius: 8px; }
+  button:hover { background: #edf4f3; }
+  button:focus-visible { outline: 3px solid #438d88; outline-offset: 3px; }
+  button[aria-selected="true"] { background: #246b67; color: white; border-color: #246b67; }
+  button:disabled { cursor: default; color: #758185; background: #f1f4f4; border-color: #e0e6e6; }
+  .tabs { margin-bottom: 12px; }
+  .steps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .steps button[aria-current="step"] { border-color: #246b67; box-shadow: inset 0 0 0 1px #246b67; }
+  ol { padding-left: 24px; }
+  li { margin: 8px 0; }
+</style>
+<body>
+  <span class="tag">NEARCHAT · ОДНОРАЗОВЫЙ МАКЕТ ЛОГИКИ</span>
+  <h1>Когда отмена обгоняет подтверждение</h1>
+  <p>Проверяем один вопрос: останется ли группа неактивной после отмены вступления,
+    если старое подтверждение придёт позже? И видно ли, что место у создателя
+    освобождается только после обработки выхода?</p>
+  <p class="muted">Условная группа: 5 участников, лимит 32. Одна попытка вступления.
+    События доставляете вы кнопками. Данные живут только в памяти страницы.
+    Реальная сеть, запись на диск, часы, шифрование и восстановление после сбоя здесь не моделируются.
+    Это не экран iOS-приложения и не проверка его кода.</p>
+
+  <h2>Текущее состояние</h2>
+  <div class="cards" id="state"></div>
+  <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+  <h2>Свободные действия</h2>
+  <p class="muted">Можно нажимать в любом порядке. Если действие сейчас неприменимо,
+    макет объяснит причину. Нажатие свободной кнопки завершает пошаговый режим.</p>
+  <div class="buttons" id="actions"></div>
+  <p><button id="reset">Начать заново</button></p>
+
+  <h2>Пошаговые сценарии</h2>
+  <div class="tabs" id="tabs" role="tablist" aria-label="Сценарии вступления"></div>
+  <section class="walkthrough" id="walkthrough"></section>
+
+  <h2>Последние события</h2>
+  <ol id="events"></ol>
+
+<script>
+/* Модель переходов не обращается к странице, сети или хранилищам. */
+const JoinModel = (() => {
+  function initial() {
+    return {
+      agreed: false, cancelled: false, requestHandled: false,
+      memberAtCreator: false, cancelAtCreator: false,
+      joinProofCreated: false, joinedLocally: false,
+      cancelConfirmedLocally: false,
+      note: 'Приглашение получено. Начните с согласия на вступление.'
+    };
+  }
+  function transition(previous, action) {
+    const s = { ...previous };
+    const finish = message => { s.note = message; return s; };
+    switch (action) {
+      case 'accept':
+        if (s.agreed) return finish('Согласие по этой попытке уже отправлено. Новая попытка здесь не создаётся.');
+        s.agreed = true;
+        return finish('Согласие отправлено. Создатель ещё не обработал запрос.');
+      case 'fix':
+        if (!s.agreed) return finish('Сначала требуется согласие приглашённого.');
+        if (s.cancelAtCreator) return finish('Создатель уже получил отмену. Старый запрос не оформляет членство.');
+        if (s.requestHandled) return finish('Создатель уже оформил эту попытку. Повтор не занимает второе место.');
+        s.requestHandled = true;
+        s.memberAtCreator = true;
+        s.joinProofCreated = true;
+        return finish('Создатель оформил членство. Ответ ещё не доставлен пользователю.');
+      case 'join_ack':
+        if (!s.joinProofCreated) return finish('Подтверждение вступления ещё не создано.');
+        if (s.cancelled) return finish('Старое подтверждение получено после отмены. Группа не активируется.');
+        if (s.joinedLocally) return finish('Повтор подтверждения не создаёт второе вступление.');
+        s.joinedLocally = true;
+        return finish('Достоверное подтверждение получено. Группа активна.');
+      case 'cancel':
+        if (!s.agreed) return finish('Пока нет отправленного согласия. Отказ от самого приглашения — другой сценарий.');
+        if (s.joinedLocally) return finish('Вступление уже подтверждено. Для активной группы используется обычный выход.');
+        if (s.cancelled) return finish('Эта попытка уже отменена локально. Повтор не создаёт новый выход.');
+        s.cancelled = true;
+        return finish('Вступление отменено локально. Удалённая обработка отмены или выхода ещё не подтверждена.');
+      case 'cancel_delivered':
+        if (!s.cancelled) return finish('Пользователь ещё не отменял эту попытку.');
+        if (s.cancelAtCreator) return finish('Создатель уже обработал отмену. Повтор не меняет число участников.');
+        s.cancelAtCreator = true;
+        s.requestHandled = true;
+        s.memberAtCreator = false;
+        return finish('Создатель обработал отмену: запрос отозван либо уже оформленный участник вышел. Ответ ещё в пути.');
+      case 'cancel_ack':
+        if (!s.cancelAtCreator) return finish('Создатель ещё не обработал отмену, подтверждать её рано.');
+        s.cancelConfirmedLocally = true;
+        return finish('Подтверждение обработки отмены получено. Членства по этой попытке у создателя нет.');
+      default:
+        return finish('Действие не входит в этот макет.');
+    }
+  }
+  return { initial, transition };
+})();
+</script>
+<script>
+const actionLabels = {
+  accept: 'Принять приглашение',
+  fix: 'Создатель обработал запрос',
+  join_ack: 'Подтверждение вступления дошло',
+  cancel: 'Отменить вступление',
+  cancel_delivered: 'Отмена дошла до создателя',
+  cancel_ack: 'Подтверждение отмены дошло'
+};
+const scenarios = [
+  {
+    title: 'Обычное вступление',
+    description: 'Членство появляется у создателя раньше, чем группа становится активной на устройстве приглашённого.',
+    steps: ['accept', 'fix', 'join_ack']
+  },
+  {
+    title: 'Отмена раньше обработки',
+    description: 'Отмена дошла первой. Последующая обработка старого запроса не добавляет участника.',
+    steps: ['accept', 'cancel', 'cancel_delivered', 'fix', 'cancel_ack']
+  },
+  {
+    title: 'Отмена после фиксации',
+    description: 'Создатель уже занял место. Старое подтверждение не активирует группу после локальной отмены. Место освобождается при доставке выхода.',
+    steps: ['accept', 'fix', 'cancel', 'join_ack', 'cancel_delivered', 'cancel_ack']
+  },
+  {
+    title: 'Отмена задержалась',
+    description: 'Пользователь отменил попытку, но создатель пока об этом не знает и оформляет ранее отправленный запрос. Доставка отмены затем оформляет выход.',
+    steps: ['accept', 'cancel', 'fix', 'join_ack', 'cancel_delivered', 'cancel_ack']
+  },
+  {
+    title: 'Повторы ответов',
+    description: 'Повторная обработка той же попытки и подтверждения не занимают дополнительные места.',
+    steps: ['accept', 'fix', 'join_ack', 'fix', 'join_ack']
+  }
+];
+let state = JoinModel.initial();
+let scenarioIndex = 0;
+let stepIndex = 0;
+let guided = true;
+let events = [];
+const yesNo = value => value ? 'Да' : 'Нет';
+function localStatus(s) {
+  if (s.cancelConfirmedLocally) return 'Вступление отменено';
+  if (s.cancelled) return 'Отмена ожидает подтверждения';
+  if (s.joinedLocally) return 'Активная группа';
+  if (s.agreed) return 'Ожидает подтверждения';
+  return 'Приглашение получено';
+}
+function card(title, rows) {
+  return '<section class="card"><h3>' + title + '</h3><dl>' +
+    rows.map(row => '<dt>' + row[0] + '</dt><dd>' + row[1] + '</dd>').join('') +
+    '</dl></section>';
+}
+function render() {
+  document.getElementById('state').innerHTML =
+    card('Устройство пользователя', [
+      ['Группа', localStatus(state)],
+      ['Согласие отправлено', yesNo(state.agreed)],
+      ['Отмена выбрана пользователем', yesNo(state.cancelled)],
+      ['Вступление подтверждено локально', yesNo(state.joinedLocally)],
+      ['Обработка отмены подтверждена локально', yesNo(state.cancelConfirmedLocally)]
+    ]) +
+    card('Приложение создателя', [
+      ['Запрос обработан', yesNo(state.requestHandled)],
+      ['Этот человек числится участником', yesNo(state.memberAtCreator)],
+      ['Отмена обработана', yesNo(state.cancelAtCreator)],
+      ['Подтверждение вступления было создано', yesNo(state.joinProofCreated)],
+      ['Участников у создателя', (5 + Number(state.memberAtCreator)) + ' / 32']
+    ]);
+  document.getElementById('notice').textContent = state.note;
+  document.getElementById('actions').innerHTML = Object.entries(actionLabels)
+    .map(entry => '<button data-free="' + entry[0] + '">' + entry[1] + '</button>').join('');
+  document.getElementById('tabs').innerHTML = scenarios.map((scenario, i) =>
+    '<button role="tab" data-scenario="' + i + '" aria-selected="' +
+    (i === scenarioIndex) + '">' + scenario.title + '</button>').join('');
+  const scenario = scenarios[scenarioIndex];
+  const description = document.createElement('p');
+  description.textContent = guided ? scenario.description :
+    'Свободный режим. Выберите вкладку сценария, чтобы начать его с исходного состояния.';
+  const panel = document.getElementById('walkthrough');
+  panel.replaceChildren(description);
+  if (guided) {
+    const steps = document.createElement('div');
+    steps.className = 'steps';
+    scenario.steps.forEach((action, i) => {
+      const button = document.createElement('button');
+      button.textContent = (i + 1) + '. ' + actionLabels[action];
+      button.dataset.step = String(i);
+      button.disabled = i !== stepIndex;
+      if (i === stepIndex) button.setAttribute('aria-current', 'step');
+      steps.append(button);
+    });
+    panel.append(steps);
+    if (stepIndex === scenario.steps.length) {
+      const done = document.createElement('p');
+      done.textContent = 'Сценарий завершён. Сравните состояние пользователя и создателя.';
+      panel.append(done);
+    }
+  }
+  const list = document.getElementById('events');
+  list.replaceChildren();
+  events.slice(-12).forEach(event => {
+    const item = document.createElement('li');
+    item.textContent = event;
+    list.append(item);
+  });
+}
+function dispatch(action) {
+  state = JoinModel.transition(state, action);
+  events.push(actionLabels[action] + ': ' + state.note);
+}
+function restart(index) {
+  state = JoinModel.initial();
+  events = [];
+  scenarioIndex = index;
+  stepIndex = 0;
+  guided = true;
+  render();
+}
+document.addEventListener('click', event => {
+  const button = event.target.closest('button');
+  if (!button) return;
+  if (button.id === 'reset') return restart(scenarioIndex);
+  if (button.dataset.scenario !== undefined) return restart(Number(button.dataset.scenario));
+  if (button.dataset.free) {
+    guided = false;
+    dispatch(button.dataset.free);
+    return render();
+  }
+  if (button.dataset.step !== undefined && guided && Number(button.dataset.step) === stepIndex) {
+    dispatch(scenarios[scenarioIndex].steps[stepIndex]);
+    stepIndex += 1;
+    render();
+  }
+});
+render();
+</script>
+</body>
+</html>
